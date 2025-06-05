@@ -1,6 +1,20 @@
 #include "MyOpenXRCHOP.h"
 #include <cstring>
 
+// 必須：TouchDesignerが呼び出すエクスポート関数
+extern "C"
+{
+    DLLEXPORT CHOP_CPlusPlusBase* CreateCHOPInstance(const OP_NodeInfo* info)
+    {
+        return new MyOpenXRCHOP(info);
+    }
+
+    DLLEXPORT void DestroyCHOPInstance(CHOP_CPlusPlusBase* instance)
+    {
+        delete (MyOpenXRCHOP*)instance;
+    }
+}
+
 MyOpenXRCHOP::MyOpenXRCHOP(const OP_NodeInfo* info)
     : isInitialized(false)
 {
@@ -51,12 +65,12 @@ void MyOpenXRCHOP::pulsePressed(const char*, void*) {}
 
 bool MyOpenXRCHOP::initializeOpenXR()
 {
-    // 初期化処理（実際のOpenXRランタイムで実装）
+    // OpenXRの初期化処理（仮実装）
     return true;
 }
 
 void MyOpenXRCHOP::updateMatrices()
 {
     for (int i = 0; i < 64; ++i)
-        viewProjMatrix[i] = static_cast<float>(i); // 仮データ（実際はHMDから取得）
+        viewProjMatrix[i] = static_cast<float>(i); // 仮の行列データ
 }
